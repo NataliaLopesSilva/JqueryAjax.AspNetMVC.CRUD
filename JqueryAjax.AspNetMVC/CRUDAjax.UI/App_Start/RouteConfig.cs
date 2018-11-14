@@ -15,12 +15,12 @@ namespace CRUDAjax.UI
             routes.MapRoute(
                 name: "CrudApp",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "App", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Receita", action = "ReceitaPrincipal", id = UrlParameter.Optional }
             );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Receita", action = "ReceitaPrincipal", id = UrlParameter.Optional }
             );
         }
     }

@@ -48,3 +48,20 @@ D:\UFG\6° período\Leitura de Software\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.Asp
 D:\UFG\6° período\Leitura de Software\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.pdb
 D:\UFG\6° período\Leitura de Software\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\Newtonsoft.Json.dll
 D:\UFG\6° período\Leitura de Software\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\Newtonsoft.Json.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\CRUDAjax.UI.dll.config
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\CRUDAjax.UI.dll
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\CRUDAjax.UI.pdb
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\Newtonsoft.Json.dll
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\Microsoft.Web.Infrastructure.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\Newtonsoft.Json.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.Helpers.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.Mvc.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.Razor.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.WebPages.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.WebPages.Deployment.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\bin\System.Web.WebPages.Razor.xml
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.csprojAssemblyReference.cache
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.csproj.CoreCompileInputs.cache
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.csproj.CopyComplete
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.dll
+C:\Users\laris\Desktop\TRABALHOS-UFG\JqueryAjax.AspNetMVC.CRUD\JqueryAjax.AspNetMVC\CRUDAjax.UI\obj\Debug\CRUDAjax.UI.pdb

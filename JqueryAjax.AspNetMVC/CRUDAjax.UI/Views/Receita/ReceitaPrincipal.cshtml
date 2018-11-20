@@ -21,7 +21,8 @@
                                     </div>
                                     <div class="col-md-4 text-center">
                                         <div class="form-group">
-                                            <img src="~/Images/nophotoII.jpg" class="thumbnail" style="width:100px; height:90px;" />
+                                            <img id="imagem" class=newbtn src="~/Images/nophotoII.jpg" style="width:100px; height:90px; cursor:pointer" />
+                                            <input id="pic" class='pis' onchange="readURL(this);" type="file" style="display:none">
                                         </div>
                                     </div>
                                 </div>
@@ -158,6 +159,22 @@
 
 <script>
 
+    $('.newbtn').bind("click", function () {
+        $('#pic').click();
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#imagem')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
     function salvaReceita() {
 

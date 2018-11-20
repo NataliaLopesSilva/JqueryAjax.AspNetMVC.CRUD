@@ -118,6 +118,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Api\Translate.cs" />
+    <Compile Include="Models\Model\InformacaoNutricionalModel.cs" />
     <Compile Include="Models\Model\IngredienteModel.cs" />
     <Compile Include="Models\Model\ReceitaModel.cs" />
     <Compile Include="Models\Negocio\PessoaNeg.cs" />

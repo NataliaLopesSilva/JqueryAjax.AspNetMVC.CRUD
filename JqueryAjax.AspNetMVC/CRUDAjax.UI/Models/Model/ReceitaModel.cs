@@ -14,5 +14,8 @@ namespace CRUDAjax.UI.Models.Model
         public string porcao { get; set; }
 
         public List<IngredienteModel> listaIngrediente { get; set; }
+
+        public InformacaoNutricionalModel informacaoNutricional { get; set; }
+
     }
 }

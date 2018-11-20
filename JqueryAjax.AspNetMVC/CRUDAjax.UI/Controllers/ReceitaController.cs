@@ -27,8 +27,10 @@ namespace CRUDAjax.Controllers
         public ActionResult VerReceita()
         {
             //Consulta as receitas existentes no arquivo json
+            ReceitaModel receita = new ReceitaModel();
+            receita.tituloReceita = "BRIGADEIRO";
 
-            return View();
+            return View(receita);
         }
 
 

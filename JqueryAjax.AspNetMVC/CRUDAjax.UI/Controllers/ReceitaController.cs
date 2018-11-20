@@ -23,6 +23,14 @@ namespace CRUDAjax.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult VerReceita()
+        {
+            //Consulta as receitas existentes no arquivo json
+
+            return View();
+        }
+
 
         [HttpPost]
         public ActionResult InserirReceita()

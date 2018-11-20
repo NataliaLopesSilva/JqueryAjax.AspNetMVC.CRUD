@@ -106,11 +106,11 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="panel panel-default card btn" style="width: 100%">
+                                        <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita()">
                                             <div class="panel-body">
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <img src="~/Images/Hamburguer.jpg" style="width: 100px; height:80px" />
+                                                        <img id="imagemH" src="~/Images/Hamburguer.jpg" style="width: 100px; height:80px" />
                                                     </div>
                                                     <div class="col-md-6" style="white-space:normal">
                                                         <h3 style="color:#707070; font-size:22px"> Hamburger</h3>
@@ -146,179 +146,189 @@
     </div>
 </section>
 
-<style>
-    .card {
-        box-shadow: 3px 3px 5px 0 #ccc;
-        border-radius: 10px;
-    }
 
-        .card:hover {
-            box-shadow: 0 20px 60px rgba(0,0,0,.2);
-        }
-</style>
+<div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
+</div>
 
-<script>
-
-    $('.newbtn').bind("click", function () {
-        $('#pic').click();
-    });
-
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) {
-                $('#imagem')
-                    .attr('src', e.target.result);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-
-    function salvaReceita() {
-
-        var receita = new Object();
-
-        receita.tituloReceita = $("#tituloReceita").val();
-        receita.modoPreparo = $("#modoPreparo").val();
-
-        receita.listaIngrediente = new Array();
-
-        $('#tblItemReceita tbody tr').each(function (i, linha) {
-            var obj = new Object();
-            obj.nomeIngrediente = $(linha).find('td:eq(0)').text();
-            obj.qtda = $(linha).find('td:eq(1)').text();
-
-            receita.listaIngrediente.push(obj);
-        });
-
-        //Traduz a receita
-        $.ajax({
-            contentType: 'application/json; charset=utf-8',
-            dataType: 'json',
-            type: 'POST',
-            url: '../Receita/TraduzReceita',
-            data: JSON.stringify({
-                receita: receita
-            }),
-            beforeSend: function () {
-                $("#btnSalvar").focus();
-                $('#btnFormulario').hide();
-                $('#barraProgresso').show();
-            },
-            success: function (data) {
-                var vetorIng = new Array();
-
-                for (var i = 0; i < data.receitaTraduzida.listaIngrediente.length; i++) {
-
-                    if (data.receitaTraduzida.listaIngrediente[i].qtda.indexOf("grams")) {
-                        vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda + " of " +
-                            data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
-                    }
-                    else {
-                        vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda.replace("x", "") + " " +
-                            data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
-                    }
-                }
-
-                var ingredientes = {
-                    "title": data.receitaTraduzida.tituloReceita,
-                    "prep": data.receitaTraduzida.modoPreparo,
-                    "yield": "About 15 servings",
-                    "ingr": vetorIng
-                }
-
-                var url = "https://api.edamam.com/api/nutrition-details";
-                url += "?app_id=556c497d";
-                url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
-
-                $.ajax({
-                    type: "POST",
-                    contentType: "application/json",
-                    url: url,
-                    data: JSON.stringify(ingredientes),
-                    dataType: "json",
-                }).then(function (response) {
-                    alert(data);
-                });
-            },
-            error: function (request, status, error) {
-                alert("Erro");
-            },
-            complete: function () {
-                $("#barraProgresso").hide();
-                $('#btnFormulario').show();
-            },
-        });
-    }
-
-    function adicionaIngrediente() {
-        var ingrediente = $("#ingrediente").val();
-        var qdta = $("#qdta").val();
-        var tipoQtda = $("#tipoQtda").val();
-
-        if (tipoQtda === "Quantidade") {
-            qdta += " x";
-        }
-        else {
-            qdta += " gramas";
+    <style>
+        .card {
+            box-shadow: 3px 3px 5px 0 #ccc;
+            border-radius: 10px;
         }
 
-        AdicionarLinhaTabela($('#tblItemReceita'), ingrediente, qdta);
-    }
+            .card:hover {
+                box-shadow: 0 20px 60px rgba(0,0,0,.2);
+            }
+    </style>
 
-    //adiciona linha na tabela recebendo parametros do click btnAdicionar
-    function AdicionarLinhaTabela(table, ingrediente, qdta) {
-        var tr = $('<tr></tr>');
+    <script>
 
-        tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
-        tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
-        tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');
-
-        table.append(tr);
-
-        $("#ingrediente").val("");
-        $("#qdta").val("");
-    }
-
-    //Remove Linha tabela, tirando membro da célula
-    (function ($) {
-        RemoveItem = function (handler) {
-            var tr = $(handler).closest('tr');
-            tr.fadeOut(300, function () {
-                tr.remove();
+        function VerReceita() {
+            $("#modal").load("VerReceita", function (response, status, xhr) {
+                $("#modal").modal();
             });
-        };
-    })(jQuery);
+        }
 
-
-    function adicionaReceita() {
-
-        var receita = new Object();
-
-        receita.tituloReceita = $("#tituloReceita").val();
-        receita.modoPreparo = $("#modoPreparo").val();
-
-        receita.listaIngrediente = new Array;
-        var obj = new Object();
-
-        $('#tblItemReceita tbody tr').each(function (i, linha) {
-            obj.ingrediente = $(linha).find('td:eq(0)').text();
-            obj.qtda = $(linha).find('td:eq(1)').text();
-
-            listaIngrediente.push(obj);
+        $('.newbtn').bind("click", function () {
+            $('#pic').click();
         });
 
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
 
-    }
+                reader.onload = function (e) {
+                    $('#imagem')
+                        .attr('src', e.target.result);
+                };
 
-    $(document).ready(function () {
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function salvaReceita() {
+
+            var receita = new Object();
+
+            receita.tituloReceita = $("#tituloReceita").val();
+            receita.modoPreparo = $("#modoPreparo").val();
+
+            receita.listaIngrediente = new Array();
+
+            $('#tblItemReceita tbody tr').each(function (i, linha) {
+                var obj = new Object();
+                obj.nomeIngrediente = $(linha).find('td:eq(0)').text();
+                obj.qtda = $(linha).find('td:eq(1)').text();
+
+                receita.listaIngrediente.push(obj);
+            });
+
+            //Traduz a receita
+            $.ajax({
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                type: 'POST',
+                url: '../Receita/TraduzReceita',
+                data: JSON.stringify({
+                    receita: receita
+                }),
+                beforeSend: function () {
+                    $("#btnSalvar").focus();
+                    $('#btnFormulario').hide();
+                    $('#barraProgresso').show();
+                },
+                success: function (data) {
+                    var vetorIng = new Array();
+
+                    for (var i = 0; i < data.receitaTraduzida.listaIngrediente.length; i++) {
+
+                        if (data.receitaTraduzida.listaIngrediente[i].qtda.indexOf("grams")) {
+                            vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda + " of " +
+                                data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
+                        }
+                        else {
+                            vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda.replace("x", "") + " " +
+                                data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
+                        }
+                    }
+
+                    var ingredientes = {
+                        "title": data.receitaTraduzida.tituloReceita,
+                        "prep": data.receitaTraduzida.modoPreparo,
+                        "yield": "About 15 servings",
+                        "ingr": vetorIng
+                    }
+
+                    var url = "https://api.edamam.com/api/nutrition-details";
+                    url += "?app_id=556c497d";
+                    url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
+
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json",
+                        url: url,
+                        data: JSON.stringify(ingredientes),
+                        dataType: "json",
+                    }).then(function (response) {
+                        alert(data);
+                    });
+                },
+                error: function (request, status, error) {
+                    alert("Erro");
+                },
+                complete: function () {
+                    $("#barraProgresso").hide();
+                    $('#btnFormulario').show();
+                },
+            });
+        }
+
+        function adicionaIngrediente() {
+            var ingrediente = $("#ingrediente").val();
+            var qdta = $("#qdta").val();
+            var tipoQtda = $("#tipoQtda").val();
+
+            if (tipoQtda === "Quantidade") {
+                qdta += " x";
+            }
+            else {
+                qdta += " gramas";
+            }
+
+            AdicionarLinhaTabela($('#tblItemReceita'), ingrediente, qdta);
+        }
+
+        //adiciona linha na tabela recebendo parametros do click btnAdicionar
+        function AdicionarLinhaTabela(table, ingrediente, qdta) {
+            var tr = $('<tr></tr>');
+
+            tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
+            tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
+            tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');
+
+            table.append(tr);
+
+            $("#ingrediente").val("");
+            $("#qdta").val("");
+        }
+
+        //Remove Linha tabela, tirando membro da célula
+        (function ($) {
+            RemoveItem = function (handler) {
+                var tr = $(handler).closest('tr');
+                tr.fadeOut(300, function () {
+                    tr.remove();
+                });
+            };
+        })(jQuery);
 
 
-    });
-</script>
+        function adicionaReceita() {
 
-@*@section scripts{
-        <script src="~/Scripts/App/CrudApp.js"></script>
-    }*@
+            var receita = new Object();
+
+            receita.tituloReceita = $("#tituloReceita").val();
+            receita.modoPreparo = $("#modoPreparo").val();
+
+            receita.listaIngrediente = new Array;
+            var obj = new Object();
+
+            $('#tblItemReceita tbody tr').each(function (i, linha) {
+                obj.ingrediente = $(linha).find('td:eq(0)').text();
+                obj.qtda = $(linha).find('td:eq(1)').text();
+
+                listaIngrediente.push(obj);
+            });
+
+
+        }
+
+        $(document).ready(function () {
+
+
+        });
+    </script>
+
+    @*@section scripts{
+            <script src="~/Scripts/App/CrudApp.js"></script>
+        }*@

@@ -1,7 +1,7 @@
 ﻿using CRUDAjax.UI;
 using CRUDAjax.UI.Models.Api;
 using CRUDAjax.UI.Models.Model;
-using CRUDAjax.UI.Models.Negocio;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +18,10 @@ namespace CRUDAjax.Controllers
         [HttpGet]
         public ActionResult ReceitaPrincipal()
         {
-            //Consulta as receitas existentes no arquivo json
+            ReceitaModel obj = new ReceitaModel();
+            obj.listaReceitas = obj.consultaTodasReceita();
 
-            return View();
+            return View(obj);
         }
 
         [HttpGet]
@@ -35,9 +36,10 @@ namespace CRUDAjax.Controllers
 
 
         [HttpPost]
-        public ActionResult InserirReceita()
+        public ActionResult InserirReceita(ReceitaModel receita)
         {
-            return View();
+            string msg = receita.validaInserirReceita(receita);
+            return Json(msg, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -74,84 +76,6 @@ namespace CRUDAjax.Controllers
             catch (Exception)
             {
                 return Json("ERRO", JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        //Informamos no Atributo HTTPPOST que será uma requisição deste tipo
-        [HttpPost]
-        public void Cadastrar(PessoaModel pessoa)
-        {
-            try
-            {
-                new PessoaNeg().Cadastrar(pessoa);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-        //por padrão será HttpGet, entao nao precisamos informar no atributo
-        public ActionResult Editar(int id)
-        {
-            try
-            {
-                var pessoa = new PessoaNeg().GetById(id);
-                //para retornar ao ajax, temos que enviar nosso objeto em formato JSON, e LIBERA-LO
-                //Para a requisicao GET
-                return Json(pessoa, JsonRequestBehavior.AllowGet);
-
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-        [HttpPost]
-        public void Atualizar(PessoaModel pessoa)
-        {
-            try
-            {
-                new PessoaNeg().Atualizar(pessoa);
-
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-        public void Deletar(int id)
-        {
-            try
-            {
-                new PessoaNeg().Deletar(id);
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-
-        }
-        public ActionResult Listar()
-        {
-            try
-            {
-                var listPessoas = new PessoaNeg().Listar();
-                //para retornar ao ajax, temos que enviar nosso objeto em formato JSON, e LIBERA-LO
-                //Para a requisicao GET
-                return Json(listPessoas, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception)
-            {
-
-                throw;
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model CRUDAjax.UI.Models.Model.ReceitaModel
+
+@{
     ViewBag.Title = "SINGLE PAGE APPLICATION";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -77,7 +79,8 @@
 
                                 <hr />
 
-                                <button class="btn btn-primary" type="button" style="text-align:right" onclick="salvaReceita()"> Salvar Receita</button>
+                                <button class="btn btn-primary" type="button" id="btnSalvar" style="text-align:right" onclick="salvaReceita()"> Salvar Receita</button>
+                                <div class="loader" id="carregando" style="text-align:center; display:none"></div>
                             </div>
                         </div>
                     </div>
@@ -89,53 +92,25 @@
                                 <hr />
 
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default card btn" style="width: 100%">
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <img src="~/Images/lasanha.jpg" style="width: 100px; height:80px" />
-                                                    </div>
-                                                    <div class="col-md-6" style="white-space:normal">
-                                                        <h3 style="color:#707070; font-size:22px"> Lasanha</h3>
-                                                        <p style="font-size:10px">135 calorias (100 gramas)</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita()">
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <img id="imagemH" src="~/Images/Hamburguer.jpg" style="width: 100px; height:80px" />
-                                                    </div>
-                                                    <div class="col-md-6" style="white-space:normal">
-                                                        <h3 style="color:#707070; font-size:22px"> Hamburger</h3>
-                                                        <p style="font-size:10px">257 calorias (100 gramas)</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default card btn" style="width: 100%">
-                                            <div class="panel-body">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <img src="~/Images/RedVelvet.jpeg" style="width: 100px; height:80px" />
-                                                    </div>
-                                                    <div class="col-md-6" style="white-space:normal">
-                                                        <h3 style="color:#707070; font-size:22px"> Red Velvet</h3>
-                                                        <p style="font-size:10px">371 calorias (100 gramas)</p>
+                                    @foreach (var item in Model.listaReceitas)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita()">
+                                                <div class="panel-body">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <img id="imagemH" src="~/Images/Hamburguer.jpg" style="width: 100px; height:80px" />
+                                                        </div>
+                                                        <div class="col-md-6" style="white-space:normal">
+                                                            <h3 style="color:#707070; font-size:22px"> @item.tituloReceita</h3>
+                                                            <p style="font-size:10px">257 calorias (100 gramas)</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -150,187 +125,218 @@
 <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
 </div>
 
-    <style>
-        .card {
-            box-shadow: 3px 3px 5px 0 #ccc;
-            border-radius: 10px;
+<style>
+    .card {
+        box-shadow: 3px 3px 5px 0 #ccc;
+        border-radius: 10px;
+    }
+
+        .card:hover {
+            box-shadow: 0 20px 60px rgba(0,0,0,.2);
         }
+</style>
 
-            .card:hover {
-                box-shadow: 0 20px 60px rgba(0,0,0,.2);
-            }
-    </style>
-
-    <script>
-
-        function VerReceita() {
-            $("#modal").load("VerReceita", function (response, status, xhr) {
-                $("#modal").modal();
-            });
-        }
-
-        $('.newbtn').bind("click", function () {
-            $('#pic').click();
+<script>
+    function VerReceita() {
+        $("#modal").load("VerReceita", function (response, status, xhr) {
+            $("#modal").modal();
         });
+    }
 
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
+    $('.newbtn').bind("click", function () {
+        $('#pic').click();
+    });
 
-                reader.onload = function (e) {
-                    $('#imagem')
-                        .attr('src', e.target.result);
-                };
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
 
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-
-        function salvaReceita() {
-
-            var receita = new Object();
-
-            receita.tituloReceita = $("#tituloReceita").val();
-            receita.modoPreparo = $("#modoPreparo").val();
-
-            receita.listaIngrediente = new Array();
-
-            $('#tblItemReceita tbody tr').each(function (i, linha) {
-                var obj = new Object();
-                obj.nomeIngrediente = $(linha).find('td:eq(0)').text();
-                obj.qtda = $(linha).find('td:eq(1)').text();
-
-                receita.listaIngrediente.push(obj);
-            });
-
-            //Traduz a receita
-            $.ajax({
-                contentType: 'application/json; charset=utf-8',
-                dataType: 'json',
-                type: 'POST',
-                url: '../Receita/TraduzReceita',
-                data: JSON.stringify({
-                    receita: receita
-                }),
-                beforeSend: function () {
-                    $("#btnSalvar").focus();
-                    $('#btnFormulario').hide();
-                    $('#barraProgresso').show();
-                },
-                success: function (data) {
-                    var vetorIng = new Array();
-
-                    for (var i = 0; i < data.receitaTraduzida.listaIngrediente.length; i++) {
-
-                        if (data.receitaTraduzida.listaIngrediente[i].qtda.indexOf("grams")) {
-                            vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda + " of " +
-                                data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
-                        }
-                        else {
-                            vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda.replace("x", "") + " " +
-                                data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
-                        }
-                    }
-
-                    var ingredientes = {
-                        "title": data.receitaTraduzida.tituloReceita,
-                        "prep": data.receitaTraduzida.modoPreparo,
-                        "yield": "About 15 servings",
-                        "ingr": vetorIng
-                    }
-
-                    var url = "https://api.edamam.com/api/nutrition-details";
-                    url += "?app_id=556c497d";
-                    url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
-
-                    $.ajax({
-                        type: "POST",
-                        contentType: "application/json",
-                        url: url,
-                        data: JSON.stringify(ingredientes),
-                        dataType: "json",
-                    }).then(function (response) {
-
-
-                        alert(data);
-                    });
-                },
-                error: function (request, status, error) {
-                    alert("Erro");
-                },
-                complete: function () {
-                    $("#barraProgresso").hide();
-                    $('#btnFormulario').show();
-                },
-            });
-        }
-
-        function adicionaIngrediente() {
-            var ingrediente = $("#ingrediente").val();
-            var qdta = $("#qdta").val();
-            var tipoQtda = $("#tipoQtda").val();
-
-            if (tipoQtda === "Quantidade") {
-                qdta += " x";
-            }
-            else {
-                qdta += " gramas";
-            }
-
-            AdicionarLinhaTabela($('#tblItemReceita'), ingrediente, qdta);
-        }
-
-        //adiciona linha na tabela recebendo parametros do click btnAdicionar
-        function AdicionarLinhaTabela(table, ingrediente, qdta) {
-            var tr = $('<tr></tr>');
-
-            tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
-            tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
-            tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');
-
-            table.append(tr);
-
-            $("#ingrediente").val("");
-            $("#qdta").val("");
-        }
-
-        //Remove Linha tabela, tirando membro da célula
-        (function ($) {
-            RemoveItem = function (handler) {
-                var tr = $(handler).closest('tr');
-                tr.fadeOut(300, function () {
-                    tr.remove();
-                });
+            reader.onload = function (e) {
+                $('#imagem')
+                    .attr('src', e.target.result);
             };
-        })(jQuery);
 
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-        function adicionaReceita() {
+    function salvaReceita() {
 
-            var receita = new Object();
+        var receita = new Object();
 
-            receita.tituloReceita = $("#tituloReceita").val();
-            receita.modoPreparo = $("#modoPreparo").val();
+        receita.tituloReceita = $("#tituloReceita").val();
+        receita.modoPreparo = $("#modoPreparo").val();
 
-            receita.listaIngrediente = new Array;
+        receita.listaIngrediente = new Array();
+
+        $('#tblItemReceita tbody tr').each(function (i, linha) {
             var obj = new Object();
+            obj.nomeIngrediente = $(linha).find('td:eq(0)').text();
+            obj.qtda = $(linha).find('td:eq(1)').text();
 
-            $('#tblItemReceita tbody tr').each(function (i, linha) {
-                obj.ingrediente = $(linha).find('td:eq(0)').text();
-                obj.qtda = $(linha).find('td:eq(1)').text();
+            receita.listaIngrediente.push(obj);
+        });
 
-                listaIngrediente.push(obj);
-            });
+        //Traduz a receita
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '../Receita/TraduzReceita',
+            data: JSON.stringify({
+                receita: receita
+            }),
+            beforeSend: function () {
+                $("#btnSalvar").focus();
+                $('#btnSalvar').hide();
+                $('#carregando').show();
+            },
+            success: function (data) {
+                var vetorIng = new Array();
 
+                for (var i = 0; i < data.receitaTraduzida.listaIngrediente.length; i++) {
 
+                    if (data.receitaTraduzida.listaIngrediente[i].qtda.indexOf("grams")) {
+                        vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda + " of " +
+                            data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
+                    }
+                    else {
+                        vetorIng.push(data.receitaTraduzida.listaIngrediente[i].qtda.replace("x", "") + " " +
+                            data.receitaTraduzida.listaIngrediente[i].nomeIngrediente);
+                    }
+                }
+
+                var ingredientes = {
+                    "title": data.receitaTraduzida.tituloReceita,
+                    "prep": data.receitaTraduzida.modoPreparo,
+                    "yield": "About 15 servings",
+                    "ingr": vetorIng
+                }
+
+                var url = "https://api.edamam.com/api/nutrition-details";
+                url += "?app_id=556c497d";
+                url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: url,
+                    data: JSON.stringify(ingredientes),
+                    dataType: "json",
+                }).then(function (response) {
+                    receita.infNutricional = JSON.stringify(response);
+
+                    //Por fim insere a receita completa com suas informações nutricionais
+                    $.ajax({
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json',
+                        type: 'POST',
+                        url: '../Receita/InserirReceita',
+                        data: JSON.stringify({
+                            receita: receita
+                        }),
+                        beforeSend: function () {
+                            $("#btnSalvar").focus();
+                            $('#btnSalvar').hide();
+                            $('#carregando').show();
+                        },
+                        success: function (data) {
+                            alert("Receita inserida com sucesso!");
+
+                            //Da refresh na pagina
+                            location.reload();
+                        }, error: function (request, status, error) {
+                            $('#btnSalvar').show();
+                            $('#carregando').hide();
+
+                            alert("Erro");
+                        },
+                        complete: function () {
+                            $('#btnSalvar').show();
+                            $('#carregando').hide();
+                        },
+                    });
+                });
+            },
+            error: function (request, status, error) {
+                $('#btnSalvar').show();
+                $('#carregando').hide();
+
+                alert("Erro");
+            },
+            complete: function () {
+            },
+        });
+    }
+
+    function adicionaIngrediente() {
+        var ingrediente = $("#ingrediente").val();
+        var qdta = $("#qdta").val();
+        var tipoQtda = $("#tipoQtda").val();
+
+        if (tipoQtda === "Quantidade") {
+            qdta += " x";
+        }
+        else {
+            qdta += " gramas";
         }
 
-        $(document).ready(function () {
+        AdicionarLinhaTabela($('#tblItemReceita'), ingrediente, qdta);
+    }
+
+    //adiciona linha na tabela recebendo parametros do click btnAdicionar
+    function AdicionarLinhaTabela(table, ingrediente, qdta) {
+        var tr = $('<tr></tr>');
+
+        tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
+        tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
+        tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');
+
+        table.append(tr);
+
+        $("#ingrediente").val("");
+        $("#qdta").val("");
+    }
+
+    //Remove Linha tabela, tirando membro da célula
+    (function ($) {
+        RemoveItem = function (handler) {
+            var tr = $(handler).closest('tr');
+            tr.fadeOut(300, function () {
+                tr.remove();
+            });
+        };
+    })(jQuery);
 
 
+    function adicionaReceita() {
+
+        var receita = new Object();
+
+        receita.tituloReceita = $("#tituloReceita").val();
+        receita.modoPreparo = $("#modoPreparo").val();
+
+        receita.listaIngrediente = new Array;
+        var obj = new Object();
+
+        $('#tblItemReceita tbody tr').each(function (i, linha) {
+            obj.ingrediente = $(linha).find('td:eq(0)').text();
+            obj.qtda = $(linha).find('td:eq(1)').text();
+
+            listaIngrediente.push(obj);
         });
-    </script>
 
-    @*@section scripts{
-            <script src="~/Scripts/App/CrudApp.js"></script>
-        }*@
+
+    }
+
+    $(document).ready(function () {
+
+
+    });
+</script>
+
+<link href="~/Content/GifLoad.css" rel="stylesheet" />
+
+@*@section scripts{
+        <script src="~/Scripts/App/CrudApp.js"></script>
+    }*@

@@ -9,28 +9,43 @@ namespace CRUDAjax.UI.Repositorio
         public Conexao()
         {
             //Endereço do banco de dados
-            sqlConnection.ConnectionString = "Data Source=DESKTOP-PCKEML3;Initial Catalog=MyRecipe;Integrated Security=True";
+            sqlConnection.ConnectionString = @"Data Source=LAPTOP-2I16M0RC\SQLEXP;Initial Catalog=MyRecipe;Integrated Security=True";
         }
 
         //Método para conectar com o banco de dados
         public SqlConnection conectarBanco()
         {
-            //Verifica se a conexão já existe, se não existir então inicia a conexão com o banco
-            if (sqlConnection.State == System.Data.ConnectionState.Closed)
+            try
             {
-                sqlConnection.Open();
-            }
+                //Verifica se a conexão já existe, se não existir então inicia a conexão com o banco
+                if (sqlConnection.State == System.Data.ConnectionState.Closed)
+                {
+                    sqlConnection.Open();
+                }
 
-            return sqlConnection;
+                return sqlConnection;
+            }
+            catch (System.Exception)
+            {
+
+                throw;
+            }
         }
 
         //Método para desconectar com o banco de dados
         public void desconectarBanco()
         {
-            //Verifica se a conexão já está fechada, se não estiver fechada então ele fecha a conexão
-            if (sqlConnection.State == System.Data.ConnectionState.Open)
+            try
             {
-                sqlConnection.Close();
+                //Verifica se a conexão já está fechada, se não estiver fechada então ele fecha a conexão
+                if (sqlConnection.State == System.Data.ConnectionState.Open)
+                {
+                    sqlConnection.Close();
+                }
+            }
+            catch (System.Exception)
+            {
+                throw;
             }
         }
     }

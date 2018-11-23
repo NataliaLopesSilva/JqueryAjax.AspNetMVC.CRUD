@@ -25,21 +25,39 @@ namespace CRUDAjax.Controllers
         }
 
         [HttpGet]
-        public ActionResult VerReceita()
+        public ActionResult VerReceita(int idReceita)
         {
-            //Consulta as receitas existentes no arquivo json
-            ReceitaModel receita = new ReceitaModel();
-            receita.tituloReceita = "BRIGADEIRO";
+            try
+            {
+                ReceitaModel receita = new ReceitaModel();
+                IngredienteModel ingrediente = new IngredienteModel();
 
-            return View(receita);
+                receita = receita.consultaReceitaPorId(idReceita);
+
+                receita.listaIngrediente = new List<IngredienteModel>();
+                receita.listaIngrediente = ingrediente.consultaIngrendientePorIdReceita(receita.idReceita);
+
+                return View(receita);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
         [HttpPost]
         public ActionResult InserirReceita(ReceitaModel receita)
         {
-            string msg = receita.validaInserirReceita(receita);
-            return Json(msg, JsonRequestBehavior.AllowGet);
+            try
+            {
+                string msg = receita.validaInserirReceita(receita);
+                return Json("Receita inserida com sucesso!", JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
         }
 
 

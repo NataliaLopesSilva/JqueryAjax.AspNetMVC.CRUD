@@ -96,7 +96,7 @@
                                     @foreach (var item in Model.listaReceitas)
                                     {
                                         <div class="col-md-6">
-                                            <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita()">
+                                            <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita(@item.idReceita)">
                                                 <div class="panel-body">
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -137,8 +137,8 @@
 </style>
 
 <script>
-    function VerReceita() {
-        $("#modal").load("VerReceita", function (response, status, xhr) {
+    function VerReceita(idReceita) {
+        $("#modal").load("VerReceita?idReceita=" + idReceita, function (response, status, xhr) {
             $("#modal").modal();
         });
     }
@@ -159,7 +159,6 @@
             reader.readAsDataURL(input.files[0]);
         }
     }
-
     function salvaReceita() {
 
         var receita = new Object();
@@ -224,7 +223,18 @@
                     data: JSON.stringify(ingredientes),
                     dataType: "json",
                 }).then(function (response) {
-                    receita.infNutricional = JSON.stringify(response);
+                    
+                    receita.informacaoNutricional = new Object();
+
+                    receita.informacaoNutricional.calorias = response.calories; // calorias
+                    receita.informacaoNutricional.carboidratos = response.totalDaily.CHOCDF.quantity; // carboidratos
+                    receita.informacaoNutricional.gordurasTotais = response.totalDaily.FAT.quantity; // gorduras totais
+                    receita.informacaoNutricional.gordurasSaturadas = response.totalDaily.FASAT.quantity; // gorduras saturadas
+                    receita.informacaoNutricional.acucar = response.totalNutrients.SUGAR.quantity; //açúcar
+                    receita.informacaoNutricional.sodio = response.totalDaily.NA.quantity; // sodio
+                    receita.informacaoNutricional.proteina = response.totalDaily.PROCNT.quantity; //proteina
+                    receita.informacaoNutricional.fibra = response.totalDaily.FIBTG.quantity; // fibra
+
 
                     //Por fim insere a receita completa com suas informações nutricionais
                     $.ajax({
@@ -240,8 +250,8 @@
                             $('#btnSalvar').hide();
                             $('#carregando').show();
                         },
-                        success: function (data) {
-                            alert("Receita inserida com sucesso!");
+                        success: function (msg) {
+                            alert(msg);
 
                             //Da refresh na pagina
                             location.reload();

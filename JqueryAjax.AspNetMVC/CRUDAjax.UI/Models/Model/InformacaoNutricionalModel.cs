@@ -9,8 +9,6 @@ namespace CRUDAjax.UI.Models.Model
     {
         public decimal calorias { get; set; }
 
-        public decimal valorEnergetico { get; set; }
-
         public decimal carboidratos { get; set; }
 
         public decimal gordurasTotais { get; set; }
@@ -18,5 +16,11 @@ namespace CRUDAjax.UI.Models.Model
         public decimal gordurasSaturadas { get; set; }
 
         public decimal sodio { get; set; }
+
+        public decimal acucar { get; set; }
+
+        public decimal fibra { get; set; }
+
+        public decimal proteina { get; set; }
     }
 }

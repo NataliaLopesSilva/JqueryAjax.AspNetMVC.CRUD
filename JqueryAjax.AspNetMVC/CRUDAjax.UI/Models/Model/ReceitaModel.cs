@@ -45,6 +45,8 @@ namespace CRUDAjax.UI.Models.Model
             foreach (DataRow linha in dt.Rows)
             {
                 receita.idReceita = Convert.ToInt32(linha["idReceita"]);
+                receita.tituloReceita = Convert.ToString(linha["tituloReceita"]);
+                receita.modoPreparo = Convert.ToString(linha["modoPreparo"]);
             }
 
             return receita;
@@ -73,7 +75,40 @@ namespace CRUDAjax.UI.Models.Model
             return lista;
         }
 
+        public ReceitaModel consultaReceitaPorId(int idReceita)
+        {
+            ReceitaModel receita = new ReceitaModel();
+            SqlDataAdapter sqlConsulta = new SqlDataAdapter("SELECT * FROM Receita r where r.idReceita = @idReceita", conexao.conectarBanco());
+            DataTable dt = new DataTable();
 
+            sqlConsulta.SelectCommand.Parameters.AddWithValue("@idReceita", idReceita);
+
+            sqlConsulta.GetFillParameters();
+            sqlConsulta.Fill(dt);
+
+            receita.informacaoNutricional = new InformacaoNutricionalModel();
+
+            foreach (DataRow linha in dt.Rows)
+            {
+                
+                receita.idReceita = Convert.ToInt32(linha["idReceita"]);
+                receita.tituloReceita = Convert.ToString(linha["tituloReceita"]);
+                receita.modoPreparo = Convert.ToString(linha["modoPreparo"]);
+                receita.informacaoNutricional.calorias = Convert.ToInt32(linha["calorias"]);
+                
+                 receita.informacaoNutricional.carboidratos = Convert.ToDecimal(linha["carboidratos"]);
+                 receita.informacaoNutricional.gordurasTotais = Convert.ToDecimal(linha["gordurasTotais"]);
+                 receita.informacaoNutricional.gordurasSaturadas = Convert.ToDecimal(linha["gordurasSaturadas"]);
+                 receita.informacaoNutricional.fibra = Convert.ToDecimal(linha["fibra"]);
+                 receita.informacaoNutricional.sodio = Convert.ToDecimal(linha["sodio"]);
+
+                receita.informacaoNutricional.acucar = Convert.ToDecimal(linha["acucar"]);
+            }
+
+            return receita;
+        }
+
+        
         //Métodos de CRUD -----------------------------------------------------------------
 
         public string validaInserirReceita(ReceitaModel obj)
@@ -81,11 +116,20 @@ namespace CRUDAjax.UI.Models.Model
             string msg = "OK";
 
             //Comando a ser executado
-            cmd.CommandText = "insert into Receita (tituloReceita, modoPreparo) values (@tituloReceita, @modoPreparo)";
+            cmd.CommandText = "insert into Receita (tituloReceita, modoPreparo, calorias, carboidratos, gordurasTotais, gordurasSaturadas, fibra, sodio, acucar, proteina)" +
+                " values (@tituloReceita, @modoPreparo, @calorias, @carboidratos, @gordurasTotais, @gordurasSaturadas, @fibra, @sodio, @acucar, @proteina)";
 
             //Leitura dos parâmetros
             cmd.Parameters.AddWithValue("@tituloReceita", obj.tituloReceita);
             cmd.Parameters.AddWithValue("@modoPreparo", obj.modoPreparo);
+            cmd.Parameters.AddWithValue("@calorias", obj.informacaoNutricional.calorias);
+            cmd.Parameters.AddWithValue("@carboidratos", obj.informacaoNutricional.carboidratos);
+            cmd.Parameters.AddWithValue("@gordurasTotais", obj.informacaoNutricional.gordurasTotais);
+            cmd.Parameters.AddWithValue("@gordurasSaturadas", obj.informacaoNutricional.gordurasSaturadas);
+            cmd.Parameters.AddWithValue("@fibra", obj.informacaoNutricional.fibra);
+            cmd.Parameters.AddWithValue("@sodio", obj.informacaoNutricional.sodio);
+            cmd.Parameters.AddWithValue("@acucar", obj.informacaoNutricional.acucar);
+            cmd.Parameters.AddWithValue("@proteina", obj.informacaoNutricional.proteina);
 
             try
             {

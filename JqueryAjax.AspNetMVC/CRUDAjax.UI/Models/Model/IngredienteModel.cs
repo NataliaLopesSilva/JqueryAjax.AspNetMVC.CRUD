@@ -1,6 +1,7 @@
 ﻿using CRUDAjax.UI.Repositorio;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -52,5 +53,32 @@ namespace CRUDAjax.UI.Models.Model
                 return ex.Message;
             }
         }
+
+        public List<IngredienteModel> consultaIngrendientePorIdReceita(int idReceita)
+        {
+            SqlDataAdapter sqlConsulta = new SqlDataAdapter("SELECT * FROM Ingrediente i where i.idReceita = @idReceita", conexao.conectarBanco());
+            DataTable dt = new DataTable();
+
+            sqlConsulta.SelectCommand.Parameters.AddWithValue("@idReceita", idReceita);
+
+            sqlConsulta.GetFillParameters();
+            sqlConsulta.Fill(dt);
+
+            List<IngredienteModel> lista = new List<IngredienteModel>();
+
+            foreach (DataRow linha in dt.Rows)
+            {
+                IngredienteModel ingrediente = new IngredienteModel();
+
+                ingrediente.idReceita = Convert.ToInt32(linha["idReceita"]);
+                ingrediente.nomeIngrediente = Convert.ToString(linha["nomeIngrediente"]);
+                ingrediente.qtda = Convert.ToString(linha["qtda"]);
+
+                lista.Add(ingrediente);
+            }
+
+            return lista;
+        }
+
     }
 }

@@ -11,9 +11,11 @@
         </div>
 
         <div class="modal-body">
-            <div class="container-fluid">
-                <div class="row">
-                    @Model.tituloReceita
+            <div class="container-fluid" style="padding-bottom:20px">
+                <div class="row" >
+                    <div class="panel-heading" style="background-color:#2b2929">
+                        <h2 class="panel-title" style="text-align:center; font-size:35px; color:white">@Model.tituloReceita</h2>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -30,11 +32,51 @@
                             <table class="table table-striped table-condensed tab" id="oi">
                                 <thead>
                                     <tr>
-                                        <th>Tipo</th>
-                                        <th>Valor</th>
+                                        <th>Quantidade por porção</th>
+                                        <th>%VD*</th>
                                     </tr>
                                 </thead>
-                                <tbody></tbody>
+                                <tbody>
+                                    <tr>
+                                        <th>Calorias</th>
+                                        <th>@Model.informacaoNutricional.calorias Kcal</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Carboidratos</th>
+                                        <th>@Model.informacaoNutricional.carboidratos g</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Gorduras Totais</th>
+                                        <th>@Model.informacaoNutricional.gordurasTotais g</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Gorduras Saturadas</th>
+                                        <th>@Model.informacaoNutricional.gordurasSaturadas g</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Sodio</th>
+                                        <th>@Model.informacaoNutricional.sodio mg</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Açúcar</th>
+                                        <th>@Model.informacaoNutricional.acucar g</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Fibra</th>
+                                        <th>@Model.informacaoNutricional.fibra g</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Proteína</th>
+                                        <th>@Model.informacaoNutricional.proteina g</th>
+                                    </tr>
+                                    <tr style="font-size:12px">
+                                        <th colspan=2 style=" text-align:justify">
+                                            (*)% Valores Diários de referência com base em uma dieta de 2.000 kcal ou 8400 kJ. Seus valores
+                                            diários podem ser maiores ou menores dependendo de suas necessidades energéticas.
+                                            (1) Quando declarados.
+                                        </th>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -42,17 +84,39 @@
 
                 <div class="col-md-4" style="align-content:center">
                     <div class="panel panel-default" style="width: 570px; height:270px">
-                        <div class="panel-heading">
-                            <h2 class="panel-title" style="text-align:center; font-size:25px">Ingredientes</h2>
+                        <div class="panel-heading" style="background-color:#2b2929">
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; color:white">Ingredientes</h2>
                         </div>
                         <div class="panel-body">
+                           
+
+                            <table class="table" style="width: 450px; margin:auto">
+                                <thead>
+                                    <tr style="font-size:15px">
+                                        <th style="width:420px">Item</th>
+                                        <th style="text-align:center">Quantidade</th>
+                                    </tr>
+                                </thead>
+                                @foreach (var item in Model.listaIngrediente)
+                                {
+                                    <tbody>
+                                        <tr>
+                                            <th>@item.nomeIngrediente</th>
+                                            <th style="text-align:center">@item.qtda</th>
+                                        </tr>
+                                    </tbody>
+                                }
+                                </table>
+                            
+
                         </div>
                     </div>
                     <div class="panel panel-default" style="width: 570px; height:330px">
-                        <div class="panel-heading">
-                            <h2 class="panel-title" style="text-align:center; font-size:25px">Modo de preparo</h2>
+                        <div class="panel-heading" style="background-color:#2b2929">
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; color:white">Modo de preparo</h2>
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" style="text-align:center; font-size:15px" >
+                            @Model.modoPreparo
                         </div>
                     </div>
                 </div>
@@ -66,59 +130,9 @@
     </div>
 </div>
 
-@*
-    <div class="modal-body">
-        <div class="row">
-            <div class="col-md-4" style="align-content:center">
-                <div class="panel">
-                    <img src="~/Images/nophotoII.jpg" style="width:290px; height:270px; box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2);" />
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title" style="text-align:left; font-weight:bold; font-size:18px">Informações Nutricionais</h3>
-                    </div>
-                    <div class="panel-body">
-
-                        <table class="table table-striped table-condensed tab" id="oi">
-                            <thead>
-                                <tr>
-                                    <th>Tipo</th>
-                                    <th>Valor</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4" style="align-content:center">
-                <div class="panel panel-default" style="width: 570px; height:270px">
-                    <div class="panel-heading">
-                        <h2 class="panel-title" style="text-align:center; font-size:25px">Ingredientes</h2>
-                    </div>
-                    <div class="panel-body">
-                    </div>
-                </div>
-                <div class="panel panel-default" style="width: 570px; height:330px">
-                    <div class="panel-heading">
-                        <h2 class="panel-title" style="text-align:center; font-size:25px">Modo de preparo</h2>
-                    </div>
-                    <div class="panel-body">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-            <button type="button" class="btn btn-primary">Alterar</button>
-            <button type="button" class="btn btn-primary" onclick="x()">Salvar</button>
-        </div>
-    </div>
-*@
 
 <script>
-    $(document).ready(function () {
+   /* $(document).ready(function () {
         for (var i = 0; i < 10; i++) {
             AdicionarInformacaoNutricional();
         }
@@ -126,7 +140,9 @@
 
     function AdicionarInformacaoNutricional() {
         var tipo = "Calorias";
-        var quantidade = 300;
+        var receita = new Object();
+        receita.informacaoNutricional = new Object();
+        var quantidade = 200 
 
         TabelaInformacaoNutricional($('#oi'), tipo, quantidade);
     }
@@ -138,5 +154,5 @@
         tr.append('<td style="white-space: nowrap;">' + quantidade + '</td>');
 
         tabela.append(tr);
-    }
+    }*/
 </script>

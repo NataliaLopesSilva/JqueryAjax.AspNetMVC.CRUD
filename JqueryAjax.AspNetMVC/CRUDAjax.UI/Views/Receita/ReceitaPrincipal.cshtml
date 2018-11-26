@@ -143,6 +143,16 @@
         });
     }
 
+    document.querySelector('input').addEventListener('change', function () {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var arrayBuffer = this.result;
+            console.log(arrayBuffer);
+            document.querySelector('#pic').innerHTML = arrayBuffer + '  ' + arrayBuffer.byteLength;
+        }
+        reader.readAsArrayBuffer(this.files[0]);
+    }, false);
+/*
     $('.newbtn').bind("click", function () {
         $('#pic').click();
     });
@@ -158,7 +168,7 @@
 
             reader.readAsDataURL(input.files[0]);
         }
-    }
+    }*/
     function salvaReceita() {
 
         var receita = new Object();

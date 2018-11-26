@@ -18,6 +18,12 @@ namespace CRUDAjax.UI.Models.Model
 
         public string porcao { get; set; }
 
+        public byte[] imagem { get; set; }
+
+        public string nomeImagem { get; set; }
+
+        public string imagemArrayBytes { get; set; }
+
         public List<ReceitaModel> listaReceitas { get; set; }
 
         public List<IngredienteModel> listaIngrediente { get; set; }
@@ -64,10 +70,22 @@ namespace CRUDAjax.UI.Models.Model
             foreach (DataRow linha in dt.Rows)
             {
                 ReceitaModel receita = new ReceitaModel();
+                receita.informacaoNutricional = new InformacaoNutricionalModel();
 
                 receita.idReceita = Convert.ToInt32(linha["idReceita"]);
                 receita.tituloReceita = Convert.ToString(linha["tituloReceita"]);
                 receita.modoPreparo = Convert.ToString(linha["modoPreparo"]);
+
+                if (!linha["imagem"].ToString().Equals(""))
+                {
+                    receita.imagem = (byte[])linha["imagem"];
+
+                    //Converte imagem para base 64
+                    string imageBase64Data = Convert.ToBase64String(receita.imagem);
+                    receita.imagemArrayBytes = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                }
+
+                receita.informacaoNutricional.calorias = Convert.ToDecimal(linha["calorias"]);
 
                 lista.Add(receita);
             }
@@ -90,25 +108,33 @@ namespace CRUDAjax.UI.Models.Model
 
             foreach (DataRow linha in dt.Rows)
             {
-                
+
                 receita.idReceita = Convert.ToInt32(linha["idReceita"]);
                 receita.tituloReceita = Convert.ToString(linha["tituloReceita"]);
                 receita.modoPreparo = Convert.ToString(linha["modoPreparo"]);
-                receita.informacaoNutricional.calorias = Convert.ToInt32(linha["calorias"]);
-                
-                 receita.informacaoNutricional.carboidratos = Convert.ToDecimal(linha["carboidratos"]);
-                 receita.informacaoNutricional.gordurasTotais = Convert.ToDecimal(linha["gordurasTotais"]);
-                 receita.informacaoNutricional.gordurasSaturadas = Convert.ToDecimal(linha["gordurasSaturadas"]);
-                 receita.informacaoNutricional.fibra = Convert.ToDecimal(linha["fibra"]);
-                 receita.informacaoNutricional.sodio = Convert.ToDecimal(linha["sodio"]);
 
+                if (!linha["imagem"].ToString().Equals(""))
+                {
+                    receita.imagem = (byte[])linha["imagem"];
+
+                    //Converte imagem para base 64
+                    string imageBase64Data = Convert.ToBase64String(receita.imagem);
+                    receita.imagemArrayBytes = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                }
+
+                receita.informacaoNutricional.calorias = Convert.ToInt32(linha["calorias"]);
+                receita.informacaoNutricional.carboidratos = Convert.ToDecimal(linha["carboidratos"]);
+                receita.informacaoNutricional.gordurasTotais = Convert.ToDecimal(linha["gordurasTotais"]);
+                receita.informacaoNutricional.gordurasSaturadas = Convert.ToDecimal(linha["gordurasSaturadas"]);
+                receita.informacaoNutricional.fibra = Convert.ToDecimal(linha["fibra"]);
+                receita.informacaoNutricional.sodio = Convert.ToDecimal(linha["sodio"]);
                 receita.informacaoNutricional.acucar = Convert.ToDecimal(linha["acucar"]);
             }
 
             return receita;
         }
 
-        
+
         //Métodos de CRUD -----------------------------------------------------------------
 
         public string validaInserirReceita(ReceitaModel obj)
@@ -116,12 +142,13 @@ namespace CRUDAjax.UI.Models.Model
             string msg = "OK";
 
             //Comando a ser executado
-            cmd.CommandText = "insert into Receita (tituloReceita, modoPreparo, calorias, carboidratos, gordurasTotais, gordurasSaturadas, fibra, sodio, acucar, proteina)" +
-                " values (@tituloReceita, @modoPreparo, @calorias, @carboidratos, @gordurasTotais, @gordurasSaturadas, @fibra, @sodio, @acucar, @proteina)";
+            cmd.CommandText = "insert into Receita (tituloReceita, modoPreparo, imagem, calorias, carboidratos, gordurasTotais, gordurasSaturadas, fibra, sodio, acucar, proteina)" +
+                " values (@tituloReceita, @modoPreparo, @imagem, @calorias, @carboidratos, @gordurasTotais, @gordurasSaturadas, @fibra, @sodio, @acucar, @proteina)";
 
             //Leitura dos parâmetros
             cmd.Parameters.AddWithValue("@tituloReceita", obj.tituloReceita);
             cmd.Parameters.AddWithValue("@modoPreparo", obj.modoPreparo);
+            cmd.Parameters.AddWithValue("@imagem", obj.imagem);
             cmd.Parameters.AddWithValue("@calorias", obj.informacaoNutricional.calorias);
             cmd.Parameters.AddWithValue("@carboidratos", obj.informacaoNutricional.carboidratos);
             cmd.Parameters.AddWithValue("@gordurasTotais", obj.informacaoNutricional.gordurasTotais);

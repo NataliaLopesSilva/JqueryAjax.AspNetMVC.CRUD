@@ -51,6 +51,14 @@ namespace CRUDAjax.Controllers
         {
             try
             {
+                string[] byteStrings = receita.imagemArrayBytes.Split(',');
+                receita.imagem = new byte[byteStrings.Length];
+
+                for (int i = 0; i < byteStrings.Length; i++)
+                {
+                    receita.imagem[i] = Convert.ToByte(byteStrings[i]);
+                }
+
                 string msg = receita.validaInserirReceita(receita);
                 return Json("Receita inserida com sucesso!", JsonRequestBehavior.AllowGet);
             }

@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-md-4" style="align-content:center">
                     <div class="panel">
-                        <img src="~/Images/nophotoII.jpg" style="width:290px; height:270px; box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2)" />
+                        <img src="@Model.imagemArrayBytes" style="width:290px; height:270px; box-shadow:0 4px 8px 0 rgba(0, 0, 0, 0.2)" />
                     </div>
                     <div class="panel panel-default">
                         <div class="panel-heading">
@@ -123,7 +123,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary">Alterar</button>
-                <button type="button" class="btn btn-primary" onclick="x()">Salvar</button>
+                <button type="button" class="btn btn-danger" onclick="x()">Excluir</button>
             </div>
         </div>
 

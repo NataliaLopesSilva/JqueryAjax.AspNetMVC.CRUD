@@ -14,7 +14,7 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <h3 for="nome">Título da receita: </h3>
+                                            <h3 for="nome">Título da receita</h3>
                                             <input type="text" id="tituloReceita" class="form-control" />
                                         </div>
                                     </div>
@@ -26,7 +26,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h3 for="nome">Ingredientes: </h3>
+                                <h3 for="nome">Ingredientes</h3>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -77,33 +77,47 @@
                     <div class="col-md-7">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h2 style="text-align:center">Receitas</h2>
+                                <h2 style="text-align:center; font-family:'Open Sans'; font-size:45px; color:#639a3a">Receitas</h2>
                                 <hr />
-                                <div class="row">
+                                <div class="row" >
                                     @foreach (var item in Model.listaReceitas)
                                     {
-                                        <div class="col-md-6">
-                                            <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita(@item.idReceita)">
-                                                <div class="panel-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <img id="imagemH" src="@item.imagemArrayBytes" style="width: 100px; height:80px" />
-                                                        </div>
-                                                        <div class="col-md-6" style="white-space:normal">
-                                                            <h3 style="color:#707070; font-size:22px"> @item.tituloReceita</h3>
-                                                            <p style="font-size:10px">@item.informacaoNutricional.calorias calorias</p>
-                                                        </div>
-                                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card btn" style="width:175px; height:100%; box-shadow:none" onclick="VerReceita(@item.idReceita)">
+                                            <img class="card-img-top img-circle" src="@item.imagemArrayBytes" style="width:130px; height:130px">
+                                            <div class="card-body" style="background-size:inherit">
+                                                <div style="text-align:center">
+                                                    <h4 class="card-title"> @item.tituloReceita</h4>
+                                                    <p class="card-text">@item.informacaoNutricional.calorias calorias</p>
                                                 </div>
+
                                             </div>
                                         </div>
+
+                                    </div>
+                                        @*
+        <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita(@item.idReceita)">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img id="imagemH" src="@item.imagemArrayBytes" style="width: 100px; height:100px" />
+                    </div>
+                    <div class="col-md-6" style="white-space:normal">
+                        <h3 style="color:#707070; font-size:22px"> @item.tituloReceita</h3>
+                        <p style="font-size:10px">@item.informacaoNutricional.calorias calorias</p>
+                    </div>
+                </div>
+            </div>
+        </div>*@
                                     }
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </form>
+
         </section>
     </div>
 </section>
@@ -281,7 +295,6 @@
                         },
                         success: function (msg) {
                             alert(msg);
-
                             //Da refresh na pagina
                             location.reload();
                         }, error: function (request, status, error) {
@@ -346,7 +359,7 @@
             });
         };
     })(jQuery);
-
+    /*
 
     function adicionaReceita() {
 
@@ -366,7 +379,7 @@
         });
 
 
-    }
+    }*/
 
     $(document).ready(function () {
 

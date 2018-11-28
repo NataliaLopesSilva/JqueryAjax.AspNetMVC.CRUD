@@ -9,7 +9,7 @@
             <form action="/" method="post" id="formDados">
                 <div class="row">
                     <div class="col-md-5">
-                        <div class="panel panel-default" style="margin-left:-170px; width:500px">
+                        <div class="panel panel-default">
                             <div class="panel-body">
                                 <div class="row">
                                     <div class="col-md-8">
@@ -75,14 +75,14 @@
                         </div>
                     </div>
                     <div class="col-md-7">
-                        <div class="panel panel-default" style="margin-left:-120px; width:145%">
+                        <div class="panel panel-default">
                             <div class="panel-body">
                                 <h2 style="text-align:center; font-family:'Open Sans'; font-size:45px; color:#639a3a">Receitas</h2>
                                 <hr />
                                 <div class="row" >
                                     @foreach (var item in Model.listaReceitas)
                                     {
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="card btn" style="width:175px; height:100%; box-shadow:none" onclick="VerReceita(@item.idReceita)">
                                             <img class="card-img-top img-circle" src="@item.imagemArrayBytes" style="width:130px; height:130px">
                                             <div class="card-body" style="background-size:inherit">

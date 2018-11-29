@@ -6,11 +6,11 @@
 
 <div class="modal-dialog modal-lg" style="width: 70%">
     <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="border-bottom-color:black">
             <button type="button" class="close" data-dismiss="modal" style="color:dimgray; opacity:inherit">X</button>
-            <h2 class="panel-title" style="text-align:center; font-size:45px; color:#639a3a">@Model.tituloReceita</h2>
+            <h2 class="panel-title" style="text-align:center; font-size:45px; font-family:'Bookman Old Style'; color:#85ad35">@Model.tituloReceita</h2>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="background-color:#ecece6">
             <div class="row">
                 <div class="col-md-4" style="align-content:center">
                     <div class="panel">
@@ -77,8 +77,8 @@
 
                 <div class="col-md-4">
                     <div class="panel panel-default" style="width: 570px; height:270px">
-                        <div class="panel-heading" style="background-color:#639a3a">
-                            <h2 class="panel-title" style="text-align:center; font-size:25px; color:white">Ingredientes</h2>
+                        <div class="panel-heading" style="background-color:#85ad35">
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic';color:white">Ingredientes</h2>
                         </div>
                         <div class="panel-body">
                            
@@ -105,18 +105,21 @@
                         </div>
                     </div>
                     <div class="panel panel-default" style="width: 570px; height:330px">
-                        <div class="panel-heading" style="background-color:#639a3a">
-                            <h2 class="panel-title" style="text-align:center; font-size:25px; color:white">Modo de preparo</h2>
-                        </div>
-                        <div class="panel-body" style="text-align:center; font-size:15px" >
+                        <div class="panel-heading" style="background-color:#85ad35">
+                                <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic'; color:white">Modo de preparo</h2>
+                            </div>
+                        <div class="panel-body" style="text-align:center; overflow-y:scroll; font-size:15px; height:85%; word-wrap:break-word">
+                          
                             @Model.modoPreparo
                         </div>
-                    </div>
+                        </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Alterar</button>
-                <button type="button" class="btn btn-danger" onclick="excluirReceita()">Excluir</button>
+                <button type="button" style="background-color:#85ad35; border-color:#85ad35" class="btn btn-primary">Alterar</button>
+                <button type="button" class="btn btn-danger" onclick="deletar()">Excluir</button>
+                
+
             </div>
         </div>
 
@@ -125,27 +128,4 @@
 
 
 <script>
-   /* $(document).ready(function () {
-        for (var i = 0; i < 10; i++) {
-            AdicionarInformacaoNutricional();
-        }
-    });
-
-    function AdicionarInformacaoNutricional() {
-        var tipo = "Calorias";
-        var receita = new Object();
-        receita.informacaoNutricional = new Object();
-        var quantidade = 200 
-
-        TabelaInformacaoNutricional($('#oi'), tipo, quantidade);
-    }
-
-    function TabelaInformacaoNutricional(tabela, tipo, quantidade) {
-        var tr = $('<tr></tr>');
-
-        tr.append('<td style="white-space: nowrap;">' + tipo + '</td>');
-        tr.append('<td style="white-space: nowrap;">' + quantidade + '</td>');
-
-        tabela.append(tr);
-    }*/
 </script>

@@ -14,7 +14,7 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
-                                            <h3 for="nome">Título da receita</h3>
+                                            <h3 for="nome" style="font-family:'Gentium Book Basic'; font-size:30px">Título da receita</h3>
                                             <input type="text" id="tituloReceita" class="form-control" />
                                         </div>
                                     </div>
@@ -22,11 +22,11 @@
                                         <div class="form-group">
                                             <img id="imagem" class=newbtn src="~/Images/nophotoII.jpg" style="width:100px; height:90px; cursor:pointer" />
                                             <input id="pic" class='pis' onchange="readURL(this);" type="file" style="display:none">
-                                            <input id="imagemArrayBytes" type="text" style="display:none"/>
+                                            <input id="imagemArrayBytes" type="text" style="display:none" />
                                         </div>
                                     </div>
                                 </div>
-                                <h3 for="nome">Ingredientes</h3>
+                                <h3 for="nome" style="font-family:'Gentium Book Basic'; font-size:30px">Ingredientes</h3>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -48,7 +48,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <button class="btn btn-primary" type="button" onclick="adicionaIngrediente()">Adicionar</button>
+                                    <button class="btn btn-primary" style="background-color:#85ad35; border-color:#85ad35" type="button" onclick="adicionaIngrediente()">Adicionar</button>
                                 </div>
                                 <table class="table table-striped table-condensed tab" id="tblItemReceita">
                                     <thead>
@@ -63,13 +63,14 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <h3>Modo de preparo</h3>
+                                            <h3 style="font-family:'Gentium Book Basic'; font-size:30px">Modo de preparo</h3>
                                             <textarea class="form-control" id="modoPreparo" placeholder="Informe o modo de preparo da receita..." rows="4" style="max-height:100%"></textarea>
                                         </div>
                                     </div>
                                 </div>
                                 <hr />
-                                <button class="btn btn-primary" type="button" id="btnSalvar" style="text-align:right" onclick="salvaReceita()"> Salvar Receita</button>
+                                <button class="btn btn-primary" type="button" id="btnSalvar" style="text-align:right; background-color:#85ad35; border-color:#85ad35" onclick="salvaReceita()"> Salvar Receita</button>
+                                
                                 <div class="loader" id="carregando" style="text-align:center; display:none"></div>
                             </div>
                         </div>
@@ -77,42 +78,42 @@
                     <div class="col-md-7">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <h2 style="text-align:center; font-family:'Open Sans'; font-size:45px; color:#639a3a">Receitas</h2>
+                                <h2 style="text-align:center; font-family:'Gentium Book Basic'; font-size:50px">Receitas</h2>
                                 <hr />
-                                <div class="row" >
+                                <div class="row">
                                     @foreach (var item in Model.listaReceitas)
                                     {
-                                    <div class="col-md-4">
-                                        <div class="card btn" style="width:175px; height:100%; box-shadow:none" onclick="VerReceita(@item.idReceita)">
-                                            <img class="card-img-top img-circle" src="@item.imagemArrayBytes" style="width:130px; height:130px">
-                                            <div class="card-body" style="background-size:inherit">
-                                                <div style="text-align:center">
-                                                    <h4 class="card-title"> @item.tituloReceita</h4>
-                                                    <p class="card-text">@item.informacaoNutricional.calorias calorias</p>
+                                        <div class="col-md-4">
+                                            <div class="card btn" style="width:175px; height:100%; box-shadow:none" onclick="VerReceita(@item.idReceita)">
+                                                <img class="card-img-top img-circle" src="@item.imagemArrayBytes" style="width:130px; height:130px">
+                                                <div class="card-body" style="background-size:inherit">
+                                                    <div style="text-align:center">
+                                                        <h4 class="card-title"> @item.tituloReceita</h4>
+                                                        <p class="card-text">@item.informacaoNutricional.calorias calorias</p>
+                                                    </div>
+
                                                 </div>
-
                                             </div>
-                                        </div>
 
-                                    </div>
+                                        </div>
                                         @*
-        <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita(@item.idReceita)">
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-6">
-                        <img id="imagemH" src="@item.imagemArrayBytes" style="width: 100px; height:100px" />
-                    </div>
-                    <div class="col-md-6" style="white-space:normal">
-                        <h3 style="color:#707070; font-size:22px"> @item.tituloReceita</h3>
-                        <p style="font-size:10px">@item.informacaoNutricional.calorias calorias</p>
-                    </div>
-                </div>
-            </div>
-        </div>*@
+                    <div class="panel panel-default card btn" style="width: 100%" onclick="VerReceita(@item.idReceita)">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <img id="imagemH" src="@item.imagemArrayBytes" style="width: 100px; height:100px" />
+                                </div>
+                                <div class="col-md-6" style="white-space:normal">
+                                    <h3 style="color:#707070; font-size:22px"> @item.tituloReceita</h3>
+                                    <p style="font-size:10px">@item.informacaoNutricional.calorias calorias</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
                                     }
                                 </div>
                             </div>
-
+                            
                         </div>
                     </div>
                 </div>
@@ -202,6 +203,7 @@
         }
     }
 
+    var teste = new Object();
     function salvaReceita() {
         var receita = new Object();
 
@@ -258,7 +260,7 @@
                 var url = "https://api.edamam.com/api/nutrition-details";
                 url += "?app_id=556c497d";
                 url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
-
+                
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
@@ -267,8 +269,9 @@
                     dataType: "json",
                 }).then(function (response) {
 
+                    
                     receita.informacaoNutricional = new Object();
-
+                    
                     receita.informacaoNutricional.calorias = response.calories; // calorias
                     receita.informacaoNutricional.carboidratos = response.totalDaily.CHOCDF.quantity; // carboidratos
                     receita.informacaoNutricional.gordurasTotais = response.totalDaily.FAT.quantity; // gorduras totais
@@ -277,7 +280,11 @@
                     receita.informacaoNutricional.sodio = response.totalDaily.NA.quantity; // sodio
                     receita.informacaoNutricional.proteina = response.totalDaily.PROCNT.quantity; //proteina
                     receita.informacaoNutricional.fibra = response.totalDaily.FIBTG.quantity; // fibra
+                    ///////////////////////////
+                    debugger
+                    teste = response.calories;
 
+                    
 
                     //Por fim insere a receita completa com suas informações nutricionais
                     $.ajax({
@@ -338,8 +345,9 @@
 
     //adiciona linha na tabela recebendo parametros do click btnAdicionar
     function AdicionarLinhaTabela(table, ingrediente, qdta) {
+        
         var tr = $('<tr></tr>');
-
+        teste;
         tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
         tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
         tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');

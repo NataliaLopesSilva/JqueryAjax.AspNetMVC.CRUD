@@ -107,9 +107,6 @@
 
                     </div>
 
-                    
-
-
                     <div class="col-md-7">
                         <div class="panel panel-default">
                             <div class="panel-body">
@@ -138,17 +135,16 @@
                         </div>
                     </div>
 
-                   
-</form>
-
+                </div>
+            </form>
         </section>
     </div>
 </section>
 
 <div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
 </div>
-<style>
 
+<style>
     .card {
         box-shadow: 3px 3px 5px 0 #ccc;
         border-radius: 10px;
@@ -249,6 +245,7 @@
 
     var teste = new Object();
     function salvaReceita() {
+
         var receita = new Object();
 
         receita.tituloReceita = $("#tituloReceita").val();
@@ -304,7 +301,7 @@
                 var url = "https://api.edamam.com/api/nutrition-details";
                 url += "?app_id=556c497d";
                 url += "&app_key=dcd3f6b9c5237a47577b4c1673bd56c7"
-                
+
                 $.ajax({
                     type: "POST",
                     contentType: "application/json",
@@ -313,22 +310,37 @@
                     dataType: "json",
                 }).then(function (response) {
 
-                    
                     receita.informacaoNutricional = new Object();
-                    
                     receita.informacaoNutricional.calorias = response.calories; // calorias
-                    receita.informacaoNutricional.carboidratos = response.totalDaily.CHOCDF.quantity; // carboidratos
-                    receita.informacaoNutricional.gordurasTotais = response.totalDaily.FAT.quantity; // gorduras totais
-                    receita.informacaoNutricional.gordurasSaturadas = response.totalDaily.FASAT.quantity; // gorduras saturadas
-                    receita.informacaoNutricional.acucar = response.totalNutrients.SUGAR.quantity; //açúcar
-                    receita.informacaoNutricional.sodio = response.totalDaily.NA.quantity; // sodio
-                    receita.informacaoNutricional.proteina = response.totalDaily.PROCNT.quantity; //proteina
-                    receita.informacaoNutricional.fibra = response.totalDaily.FIBTG.quantity; // fibra
-                    ///////////////////////////
-                    debugger
-                    teste = response.calories;
 
-                    
+                    if (response.totalDaily.CHOCDF != undefined) {
+                        receita.informacaoNutricional.carboidratos = response.totalDaily.CHOCDF.quantity; // carboidratos
+                    }
+
+                    if (response.totalDaily.FAT != undefined) {
+                        receita.informacaoNutricional.gordurasTotais = response.totalDaily.FAT.quantity; // gorduras totais
+                    }
+
+                    if (response.totalDaily.FASAT != undefined) {
+                        receita.informacaoNutricional.gordurasSaturadas = response.totalDaily.FASAT.quantity; // gorduras saturadas
+                    }
+
+                    if (response.totalNutrients.SUGAR != undefined) {
+                        receita.informacaoNutricional.acucar = response.totalNutrients.SUGAR.quantity; //açúcar
+                    }
+
+                    if (response.totalDaily.NA != undefined) {
+                        receita.informacaoNutricional.sodio = response.totalDaily.NA.quantity; // sodio
+                    }
+
+                    if (response.totalDaily.PROCNT != undefined) {
+                        receita.informacaoNutricional.proteina = response.totalDaily.PROCNT.quantity; //proteina
+                    }
+
+                    if (response.totalDaily.FIBTG != undefined) {
+                        receita.informacaoNutricional.fibra = response.totalDaily.FIBTG.quantity; // fibra
+                    }
+
 
                     //Por fim insere a receita completa com suas informações nutricionais
                     $.ajax({
@@ -345,14 +357,13 @@
                             $('#carregando').show();
                         },
                         success: function (msg) {
-                            alert(msg);
-                            //Da refresh na pagina
-                            location.reload();
+                            if (msg === "OK") {
+                                msgSucesso("Registro inserido com sucesso!");
+                            } else {
+                                msgErro(msg);
+                            }
                         }, error: function (request, status, error) {
-                            $('#btnSalvar').show();
-                            $('#carregando').hide();
-
-                            alert("Erro");
+                            msgErro(error);
                         },
                         complete: function () {
                             $('#btnSalvar').show();
@@ -389,9 +400,9 @@
 
     //adiciona linha na tabela recebendo parametros do click btnAdicionar
     function AdicionarLinhaTabela(table, ingrediente, qdta) {
-        
+
         var tr = $('<tr></tr>');
-        
+
         tr.append('<td style="white-space: nowrap;">' + ingrediente + '</td>');
         tr.append('<td style="white-space: nowrap;">' + qdta + '</td>');
         tr.append('<td style="white-space: nowrap; text-align:center">' + ' <button class="btn btn-danger btn-xs" onclick="RemoveItem(this)" type="button">Remover</button>' + '</td>');

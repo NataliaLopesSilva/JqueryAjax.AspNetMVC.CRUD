@@ -80,5 +80,34 @@ namespace CRUDAjax.UI.Models.Model
             return lista;
         }
 
+        public string validaExcluirIngredientes(int idReceita)
+        {
+            string msg = "OK";
+
+            //Comando a ser executado
+            cmd.CommandText = "delete from Ingrediente where idReceita = @idReceita";
+
+            //Leitura dos parâmetros
+            cmd.Parameters.AddWithValue("@idReceita", idReceita);
+
+            try
+            {
+                //Abre a conexão
+                cmd.Connection = conexao.conectarBanco();
+
+                //Executa o comando expecífico
+                cmd.ExecuteNonQuery();
+
+                //Fecha a conexão
+                conexao.desconectarBanco();
+
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
     }
 }

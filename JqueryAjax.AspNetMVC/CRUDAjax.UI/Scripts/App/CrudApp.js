@@ -21,9 +21,14 @@ function Cadastrar() {
         //a partir dos names, ele reconhece que é daquele objeto.
         data: dadosSerializados,
         success: function () {
+            $.alert({
+                title: 'Alert!',
+                content: 'Simple alert!',
+            });
+
             //caso tudo de certo, exibe a mensagem
             //remove a mensagem existente
-            Mensagem("success", "Cadastrado com Sucesso!");
+            //Mensagem("success", "Cadastrado com Sucesso!");
             //adiciona a mensagem de sucesso
 
 

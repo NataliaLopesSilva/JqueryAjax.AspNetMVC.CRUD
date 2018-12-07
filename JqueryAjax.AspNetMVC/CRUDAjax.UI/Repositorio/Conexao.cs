@@ -9,7 +9,7 @@ namespace CRUDAjax.UI.Repositorio
         public Conexao()
         {
             //Endereço do banco de dados
-            sqlConnection.ConnectionString = @"Data Source=LAPTOP-2I16M0RC\SQLEXP;Initial Catalog=MyRecipe;Integrated Security=True";
+            sqlConnection.ConnectionString = "Data Source=DESKTOP-PCKEML3;Initial Catalog=MyRecipe;Integrated Security=True";
         }
 
         //Método para conectar com o banco de dados

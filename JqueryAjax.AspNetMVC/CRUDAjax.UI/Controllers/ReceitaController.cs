@@ -21,6 +21,17 @@ namespace CRUDAjax.Controllers
             ReceitaModel obj = new ReceitaModel();
             obj.listaReceitas = obj.consultaTodasReceita();
 
+            foreach (var item in obj.listaReceitas)
+            {
+                if (item.imagem.Count() == 0)
+                {
+                    string path = Server.MapPath("~/Images/nophotoII.jpg");
+                    byte[] imageByteData = System.IO.File.ReadAllBytes(path);
+                    string imageBase64Data = Convert.ToBase64String(imageByteData);
+                    item.imagemArrayBytes = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                }
+            }
+
             return View(obj);
         }
 
@@ -37,6 +48,14 @@ namespace CRUDAjax.Controllers
                 receita.listaIngrediente = new List<IngredienteModel>();
                 receita.listaIngrediente = ingrediente.consultaIngrendientePorIdReceita(receita.idReceita);
 
+                if (receita.imagem.Count() == 0)
+                {
+                    string path = Server.MapPath("~/Images/nophotoII.jpg");
+                    byte[] imageByteData = System.IO.File.ReadAllBytes(path);
+                    string imageBase64Data = Convert.ToBase64String(imageByteData);
+                    receita.imagemArrayBytes = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                }
+
                 return View(receita);
             }
             catch (Exception)
@@ -45,22 +64,44 @@ namespace CRUDAjax.Controllers
             }
         }
 
-
         [HttpPost]
         public ActionResult InserirReceita(ReceitaModel receita)
         {
             try
             {
-                string[] byteStrings = receita.imagemArrayBytes.Split(',');
-                receita.imagem = new byte[byteStrings.Length];
-
-                for (int i = 0; i < byteStrings.Length; i++)
+                if (receita.imagemArrayBytes != null)
                 {
-                    receita.imagem[i] = Convert.ToByte(byteStrings[i]);
+                    string[] byteStrings = receita.imagemArrayBytes.Split(',');
+                    receita.imagem = new byte[byteStrings.Length];
+
+                    for (int i = 0; i < byteStrings.Length; i++)
+                    {
+                        receita.imagem[i] = Convert.ToByte(byteStrings[i]);
+                    }
+                }
+                else
+                {
+                    receita.imagem = new byte[0];
                 }
 
                 string msg = receita.validaInserirReceita(receita);
-                return Json("Receita inserida com sucesso!", JsonRequestBehavior.AllowGet);
+                return Json(msg, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ExcluirReceita(int idReceita)
+        {
+            try
+            {
+                ReceitaModel receita = new ReceitaModel();
+
+                string msg = receita.validaExcluirReceita(idReceita);
+                return Json(msg, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -104,7 +145,5 @@ namespace CRUDAjax.Controllers
                 return Json("ERRO", JsonRequestBehavior.AllowGet);
             }
         }
-
-        
     }
 }

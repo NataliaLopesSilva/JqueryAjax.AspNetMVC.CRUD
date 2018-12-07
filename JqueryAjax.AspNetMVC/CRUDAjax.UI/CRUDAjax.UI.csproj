@@ -96,6 +96,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\logo2.png" />
+    <Content Include="Content\JqueryConfirm\jquery-confirm.css" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -103,6 +104,7 @@
     <Content Include="Images\lasanha.jpg" />
     <Content Include="Images\nophotoII.jpg" />
     <Content Include="Images\RedVelvet.jpeg" />
+    <Content Include="Scripts\App\MsgJqueryConfirm.js" />
     <Content Include="Scripts\Plugins\bootstrap.min.js" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -110,6 +112,7 @@
     <Content Include="Scripts\App\CrudApp.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\Plugins\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\Plugins\jquery-confirm.min.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

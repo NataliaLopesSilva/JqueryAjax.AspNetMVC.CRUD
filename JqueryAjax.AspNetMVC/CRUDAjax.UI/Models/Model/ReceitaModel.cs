@@ -84,7 +84,7 @@ namespace CRUDAjax.UI.Models.Model
                     string imageBase64Data = Convert.ToBase64String(receita.imagem);
                     receita.imagemArrayBytes = string.Format("data:image/png;base64,{0}", imageBase64Data);
                 }
-
+               
                 receita.informacaoNutricional.calorias = Convert.ToDecimal(linha["calorias"]);
 
                 lista.Add(receita);
@@ -180,6 +180,90 @@ namespace CRUDAjax.UI.Models.Model
                     item.idReceita = receita.idReceita;
                     msg = ingrediente.validaInserirIngrediente(item);
                 }
+
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string validaAlterarReceita(ReceitaModel obj)
+        {
+            string msg = "OK";
+
+            //Comando a ser executado
+            cmd.CommandText = "insert into Receita (tituloReceita, modoPreparo, imagem, calorias, carboidratos, gordurasTotais, gordurasSaturadas, fibra, sodio, acucar, proteina)" +
+                " values (@tituloReceita, @modoPreparo, @imagem, @calorias, @carboidratos, @gordurasTotais, @gordurasSaturadas, @fibra, @sodio, @acucar, @proteina)";
+
+            //Leitura dos parâmetros
+            cmd.Parameters.AddWithValue("@tituloReceita", obj.tituloReceita);
+            cmd.Parameters.AddWithValue("@modoPreparo", obj.modoPreparo);
+            cmd.Parameters.AddWithValue("@imagem", obj.imagem);
+            cmd.Parameters.AddWithValue("@calorias", obj.informacaoNutricional.calorias);
+            cmd.Parameters.AddWithValue("@carboidratos", obj.informacaoNutricional.carboidratos);
+            cmd.Parameters.AddWithValue("@gordurasTotais", obj.informacaoNutricional.gordurasTotais);
+            cmd.Parameters.AddWithValue("@gordurasSaturadas", obj.informacaoNutricional.gordurasSaturadas);
+            cmd.Parameters.AddWithValue("@fibra", obj.informacaoNutricional.fibra);
+            cmd.Parameters.AddWithValue("@sodio", obj.informacaoNutricional.sodio);
+            cmd.Parameters.AddWithValue("@acucar", obj.informacaoNutricional.acucar);
+            cmd.Parameters.AddWithValue("@proteina", obj.informacaoNutricional.proteina);
+
+            try
+            {
+                //Abre a conexão
+                cmd.Connection = conexao.conectarBanco();
+
+                //Executa o comando expecífico
+                cmd.ExecuteNonQuery();
+
+                //Fecha a conexão
+                conexao.desconectarBanco();
+
+                //--------------------------------------- Pesquisa a receita inserida para inserir seus ingredientes -------------------------------------
+                ReceitaModel receita = new ReceitaModel();
+                IngredienteModel ingrediente = new IngredienteModel();
+                receita = consultaReceitaEspecifica(obj.tituloReceita);
+
+                //Insere os ingredientes da receita
+                foreach (var item in obj.listaIngrediente)
+                {
+                    item.idReceita = receita.idReceita;
+                    msg = ingrediente.validaInserirIngrediente(item);
+                }
+
+                return msg;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public string validaExcluirReceita(int idReceita)
+        {
+            string msg = "OK";
+
+            IngredienteModel ingredienteModel = new IngredienteModel();
+            ingredienteModel.validaExcluirIngredientes(idReceita);
+
+            //Comando a ser executado
+            cmd.CommandText = "delete from Receita where idReceita = @idReceita";
+
+            //Leitura dos parâmetros
+            cmd.Parameters.AddWithValue("@idReceita", idReceita);
+
+            try
+            {
+                //Abre a conexão
+                cmd.Connection = conexao.conectarBanco();
+
+                //Executa o comando expecífico
+                cmd.ExecuteNonQuery();
+
+                //Fecha a conexão
+                conexao.desconectarBanco();
 
                 return msg;
             }

@@ -10,6 +10,9 @@
             <button type="button" class="close" data-dismiss="modal" style="color:dimgray; opacity:inherit">X</button>
             <h2 class="panel-title" style="text-align:center; font-size:45px; font-family:'Bookman Old Style'; color:#85ad35">@Model.tituloReceita</h2>
         </div>
+
+        <input style="display:none" value="@Model.idReceita" id="idReceita" />
+
         <div class="modal-body" style="background-color:#ecece6">
             <div class="row">
                 <div class="col-md-4" style="align-content:center">
@@ -21,7 +24,6 @@
                             <h3 class="panel-title" style="text-align:center; font-weight:bold; font-size:18px">Informações Nutricionais</h3>
                         </div>
                         <div class="panel-body">
-
                             <table class="table table-striped table-condensed tab" id="oi">
                                 <thead>
                                     <tr>
@@ -75,14 +77,12 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="panel panel-default" style="width: 570px; height:270px">
+                <div class="col-md-8" id="visualizacaoReceita">
+                    <div class="panel panel-default" style="height:370px">
                         <div class="panel-heading" style="background-color:#85ad35">
                             <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic';color:white">Ingredientes</h2>
                         </div>
-                        <div class="panel-body">
-                           
-
+                        <div class="panel-body" style="text-align:center; overflow-y:scroll; font-size:15px; height:85%; word-wrap:break-word">
                             <table class="table" style="width: 450px; margin:auto">
                                 <thead>
                                     <tr style="font-size:15px">
@@ -99,26 +99,74 @@
                                         </tr>
                                     </tbody>
                                 }
-                                </table>
-                            
-
+                            </table>
                         </div>
                     </div>
-                    <div class="panel panel-default" style="width: 570px; height:330px">
+                    <div class="panel panel-default" style="height:370px">
                         <div class="panel-heading" style="background-color:#85ad35">
-                                <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic'; color:white">Modo de preparo</h2>
-                            </div>
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic'; color:white">Modo de preparo</h2>
+                        </div>
                         <div class="panel-body" style="text-align:center; overflow-y:scroll; font-size:15px; height:85%; word-wrap:break-word">
-                          
                             @Model.modoPreparo
                         </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8" id="alteracaoReceita" style="display:none">
+                    <div class="panel panel-default">
+                        <div class="panel-heading" style="background-color:#85ad35">
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic';color:white">Ingredientes</h2>
                         </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" id="ingrediente" class="form-control" placeholder="Digite o ingrediente..." />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="number" id="qdta" class="form-control" value="1" />
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <select class="form-control" id="tipoQtda">
+                                            <option>Quantidade</option>
+                                            <option>Gramas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" style="background-color:#85ad35; border-color:#85ad35" type="button" onclick="adicionaIngrediente()">Adicionar</button>
+                            </div>
+                            <table class="table table-striped table-condensed tab" id="tblItemReceita">
+                                <thead>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Qtda</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel panel-default" style="height:370px">
+                        <div class="panel-heading" style="background-color:#85ad35">
+                            <h2 class="panel-title" style="text-align:center; font-size:25px; font-family:'Gentium Book Basic'; color:white">Modo de preparo</h2>
+                        </div>
+                        <div class="panel-body">
+                            <textarea class="form-control" id="modoPreparo" value="@Model.modoPreparo" placeholder="Informe o modo de preparo da receita..."
+                                       rows="4" style="max-height:100%"></textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" style="background-color:#85ad35; border-color:#85ad35" class="btn btn-primary">Alterar</button>
-                <button type="button" class="btn btn-danger" onclick="deletar()">Excluir</button>
-                
+                <button type="button" class="btn btn-danger" onclick="excluirReceita()">Excluir</button>
+
 
             </div>
         </div>
@@ -128,4 +176,39 @@
 
 
 <script>
+    function excluirReceita() {
+        $.confirm({
+            title: 'Excluir',
+            content: 'Deseja realmente excluir essa Receita?',
+            type: 'red',
+            typeAnimated: true,
+            buttons: {
+                sim: {
+                    text: 'Sim',
+                    btnClass: 'btn-red',
+                    action: function () {
+                        var idReceita = $("#idReceita").val();
+
+                        $.ajax({
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json',
+                            type: 'POST',
+                            url: '../Receita/ExcluirReceita',
+                            data: JSON.stringify({
+                                idReceita: idReceita
+                            }),
+                            success: function (msg) {
+                                msgSucesso("Registro excluído com sucesso!");
+                            }, error: function (request, status, error) {
+                                msgErro(msg);
+                            },
+                        });
+                    }
+                },
+                nao: {
+                    text: 'Não',
+                }
+            }
+        });
+    }
 </script>

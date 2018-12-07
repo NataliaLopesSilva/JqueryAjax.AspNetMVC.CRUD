@@ -134,6 +134,26 @@ namespace CRUDAjax.UI.Models.Model
             return receita;
         }
 
+        public ReceitaModel consultaCaloriaReceita(string tituloReceita)
+        {
+            ReceitaModel receita = new ReceitaModel();
+            SqlDataAdapter sqlConsulta = new SqlDataAdapter("SELECT * FROM Receita r where r.tituloReceita = @tituloReceita", conexao.conectarBanco());
+            DataTable dt = new DataTable();
+
+            sqlConsulta.SelectCommand.Parameters.AddWithValue("@tituloReceita", tituloReceita);
+
+            sqlConsulta.GetFillParameters();
+            sqlConsulta.Fill(dt);
+
+            receita.informacaoNutricional = new InformacaoNutricionalModel();
+
+            foreach (DataRow linha in dt.Rows)
+            {
+                receita.informacaoNutricional.calorias = Convert.ToInt32(linha["calorias"]);
+            }
+
+            return receita;
+        }
 
         //Métodos de CRUD -----------------------------------------------------------------
 

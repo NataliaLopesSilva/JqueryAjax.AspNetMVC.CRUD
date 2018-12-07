@@ -177,26 +177,17 @@
                 tituloReceita: receitaCalcular
             }),
             beforeSend: function () {
-                $("#btnSalvar").focus();
-                $('#btnSalvar').hide();
-                $('#carregando').show();
             },
             success: function (retorno) {
-                //alert(retorno);
                 if (retorno != 'Deu ruim') {
                     var oi = parseInt(retorno);
                     x(oi);
                     AdicionarLinhaP($('#teste'), receitaCalcular);
                 } else {
-                    alert('Receita não encontrada.')
-                    $("#calcular").val("");
+                    msgInfo('Receita não encontrada...');
                 }
-                
             }, error: function (request, status, error) {
-                $('#btnSalvar').show();
-                $('#carregando').hide();
-
-                alert("Erro");
+                msgErro(error);
             },
             complete: function () {
                 $('#btnSalvar').show();

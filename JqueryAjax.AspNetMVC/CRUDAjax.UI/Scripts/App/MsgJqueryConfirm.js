@@ -33,3 +33,20 @@ function msgErro(msg) {
         }
     });
 }
+
+function msgInfo(msg) {
+    $.confirm({
+        title: 'Informação!',
+        content: msg,
+        type: 'blue',
+        typeAnimated: true,
+        buttons: {
+            ok: {
+                text: 'Ok',
+                btnClass: 'btn-info',
+                action: function () {
+                }
+            },
+        }
+    });
+}

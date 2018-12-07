@@ -101,7 +101,9 @@
                                     <tbody></tbody>
                                 </table>
                                 <hr />
-                                <button class="btn btn-primary" style="background-color:#85ad35;border-color:#85ad35" type="button" onclick="x()">Calcular calorias</button>
+                                <button class="btn btn-primary" id="contador" style="background-color:#85ad35;border-color:#85ad35" type="button" onclick="contadorCalorico()">Calcular calorias</button>
+                                <p id="cal">
+                                </p> 
                             </div>
                         </div>
 
@@ -159,12 +161,58 @@
         }
 </style>
 <script>
-
+    //Adiciona a receita na tabela no "Cardápio de Hoje"
     function adicionaCaloria() {
         var receitaCalcular = $("#calcular").val();
 
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: 'json',
+            type: 'POST',
+            url: '../Receita/ContadorCalorias',
+            data: JSON.stringify({
+                tituloReceita: receitaCalcular
+            }),
+            beforeSend: function () {
+                $("#btnSalvar").focus();
+                $('#btnSalvar').hide();
+                $('#carregando').show();
+            },
+            success: function (retorno) {
+                //alert(retorno);
+                if (retorno != 'Deu ruim') {
+                    var oi = parseInt(retorno);
+                    x(oi);
+                    AdicionarLinhaP($('#teste'), receitaCalcular);
+                } else {
+                    alert('Receita não encontrada.')
+                    $("#calcular").val("");
+                }
+                
+            }, error: function (request, status, error) {
+                $('#btnSalvar').show();
+                $('#carregando').hide();
 
-        AdicionarLinhaP($('#teste'), receitaCalcular);
+                alert("Erro");
+            },
+            complete: function () {
+                $('#btnSalvar').show();
+                $('#carregando').hide();
+            },
+        });
+    }
+
+    // Calcula as calorias das receitas adicionadas à tabela
+    var teste = 0;
+    function x(retorno) {
+        teste = parseInt(retorno + teste);
+    }
+
+    // Retorna na tela o valor total das calorias
+    function contadorCalorico() {
+        var p = $('<p style="text-align:center;font-size:20px; font-family:\'Arial Black\'"></p>');
+        p.append('</br>' + teste + ' Kcal' + '</br>');
+        $('#cal').append(p);
     }
 
     //adiciona linha na tabela recebendo parametros do click btnAdicionar

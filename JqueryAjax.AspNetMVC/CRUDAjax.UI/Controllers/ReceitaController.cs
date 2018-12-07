@@ -105,6 +105,28 @@ namespace CRUDAjax.Controllers
             }
         }
 
-        
+        [HttpPost]
+        public ActionResult ContadorCalorias(String tituloReceita)
+        {
+            try
+            {
+                ReceitaModel receita = new ReceitaModel();
+
+                receita = receita.consultaCaloriaReceita(tituloReceita);
+
+                if(receita.informacaoNutricional.calorias > 0)
+                {
+                    return Json(receita.informacaoNutricional.calorias, JsonRequestBehavior.AllowGet);
+                } else
+                {
+                    return Json("Deu ruim", JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
     }
 }

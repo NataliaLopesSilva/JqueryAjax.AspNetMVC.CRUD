@@ -101,7 +101,7 @@
                                     <tbody></tbody>
                                 </table>
                                 <hr />
-                                <button class="btn btn-primary" id="contador" style="background-color:#85ad35;border-color:#85ad35" type="button" onclick="contadorCalorico()">Calcular calorias</button>
+                                <button class="btn btn-primary" id="contador" style="background-color:#85ad35;border-color:#85ad35" type="button" onclick="contadorCalorico();submitButtonStyle(this)">Calcular calorias</button>
                                 <p id="cal">
                                 </p> 
                             </div>
@@ -161,6 +161,13 @@
         }
 </style>
 <script>
+    count = 1;
+    function submitButtonStyle(_this) {
+        if (count > 1) {
+            $("#cal").val("");
+        }
+    }
+
     //Adiciona a receita na tabela no "Cardápio de Hoje"
     function adicionaCaloria() {
         var receitaCalcular = $("#calcular").val();
@@ -208,11 +215,20 @@
         teste = parseInt(retorno + teste);
     }
 
+    var conta = 0;
     // Retorna na tela o valor total das calorias
     function contadorCalorico() {
-        var p = $('<p style="text-align:center;font-size:20px; font-family:\'Arial Black\'"></p>');
-        p.append('</br>' + teste + ' Kcal' + '</br>');
+        if (conta == 0) {
+            var p = $('<div style="text-align:center;font-size:20px; font-family:\'Arial Black\'"></div>');
+            p.append('</br>' + teste + ' Kcal' + '</br>');
+            $('#cal').append(p);
+            conta = 1;
+        }
+
+        $('#cal').children().remove();
+       
         $('#cal').append(p);
+        conta = 0;
     }
 
     //adiciona linha na tabela recebendo parametros do click btnAdicionar
